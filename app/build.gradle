@@ -43,9 +43,9 @@ android {
 
 dependencies {
     //Google
-    implementation "com.google.android.gms:play-services-auth:$google_auth_version"
+    api "com.google.android.gms:play-services-auth:$google_auth_version"
     //facebook
-    implementation "com.facebook.android:facebook-login:$facebook_auth_version"
+    api "com.facebook.android:facebook-login:$facebook_auth_version"
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
@@ -55,7 +55,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-afterEvaluate{
+afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
