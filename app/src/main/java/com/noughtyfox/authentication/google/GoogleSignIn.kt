@@ -36,7 +36,7 @@ class GoogleSignIn(
             }
     }
 
-    fun signInWithGoogle(clientId: String) {
+    fun signInWithGoogle(clientId: String? = null) {
         val googleSignIn = context?.getGoogleSignInClient(clientId)
         if (context?.isUserSignedIn() == true) {
             googleSignIn?.signOut()
@@ -58,19 +58,26 @@ class GoogleSignIn(
     }
 }
 
-private fun Context.getGoogleSignInClient(clientId: String): GoogleSignInClient {
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(clientId)
-        .requestEmail()
-        .requestProfile()
-        .build()
+private fun Context.getGoogleSignInClient(clientId: String?): GoogleSignInClient {
+    val builder = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    builder.apply {
+        if (clientId != null) {
+            requestIdToken(clientId)
+        } else {
+            requestId()
+        }
 
-    return GoogleSignIn.getClient(this, gso)
+        requestEmail()
+        requestProfile()
+    }
+
+
+    return GoogleSignIn.getClient(this, builder.build())
 }
 
 fun Context.isUserSignedIn(): Boolean = GoogleSignIn.getLastSignedInAccount(this) != null
 
-fun signOut(context: Context, clientId: String, onSignOut: () -> Unit) {
+fun signOut(context: Context, clientId: String? = null, onSignOut: () -> Unit) {
     context.getGoogleSignInClient(clientId).signOut().addOnCompleteListener {
         onSignOut.invoke()
     }
