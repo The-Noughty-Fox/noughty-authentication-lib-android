@@ -48,6 +48,7 @@ In your resString:</br>
     <string name="fb_login_protocol_scheme">//your facebook schema</string>
     <string name="facebook_client_token">//your facebook client token</string>
 ```
+Next sign in:
 ```java
        FacebookSignIn.signInWithFacebook(activity, 
        onSignIn = { account->
