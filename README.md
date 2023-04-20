@@ -28,6 +28,25 @@ Next sign in:</br>
 <code>googleSignIn.signInWithGoogle(/* your clientId */)</code>
 
 <li>Facebook
+In your manifest write this:</br>
+<code>
+      <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
+</code>
+
+In your resString:</br>
+<code>
+    string name="facebook_app_id">//your facebook app id</string
+    string name="fb_login_protocol_scheme">//your facebook schema</string
+    string name="facebook_client_token">//your facebook client token</string
+</code>
 <code>
        FacebookSignIn.signInWithFacebook(activity, 
        onSignIn = { account->
