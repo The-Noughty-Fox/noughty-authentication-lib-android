@@ -2,7 +2,7 @@
 buildscript {
     ext {
         google_auth_version = '20.5.0'
-        facebook_auth_version = "15.2.0"
+        facebook_auth_version = "16.0.0"
         kotlin_version = "1.8.0"
         core_ktx_version = "1.7.0"
         appcompat_version = "1.6.1"
