@@ -7,6 +7,7 @@ buildscript {
         core_ktx_version = "1.7.0"
         appcompat_version = "1.6.1"
         material_version = "1.8.0"
+        data_store_version = "1.0.0"
     }
 
     repositories {

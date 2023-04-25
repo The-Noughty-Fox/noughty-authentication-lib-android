@@ -12,6 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.noughtyfox.authentication.AuthStore
+import com.noughtyfox.authentication.AuthType
+import kotlinx.coroutines.runBlocking
 
 class GoogleSignIn(
     private val context: Context?,
@@ -32,7 +35,7 @@ class GoogleSignIn(
                 REGISTER_KEY, owner,
                 ActivityResultContracts.StartActivityForResult()
             ) { result ->
-                getData(result.data, onSignIn, onFails)
+                getData(context, result.data, onSignIn, onFails)
             }
     }
 
@@ -46,12 +49,19 @@ class GoogleSignIn(
     }
 
     private fun getData(
+        context: Context?,
         data: Intent?,
         onSignIn: (GoogleSignInAccount) -> Unit,
         onFails: (ApiException) -> Unit
     ) = try {
         val task = GoogleSignIn.getSignedInAccountFromIntent(data)
         val account = task.getResult(ApiException::class.java)
+        runBlocking {
+            context?.let { context ->
+                AuthStore(context).saveAuthType(AuthType.Facebook)
+            }
+        }
+
         onSignIn.invoke(account)
     } catch (e: ApiException) {
         onFails.invoke(e)
@@ -79,6 +89,7 @@ fun Context.isUserSignedIn(): Boolean = GoogleSignIn.getLastSignedInAccount(this
 
 fun signOut(context: Context, clientId: String? = null, onSignOut: () -> Unit) {
     context.getGoogleSignInClient(clientId).signOut().addOnCompleteListener {
+        runBlocking { AuthStore(context).saveAuthType(null) }
         onSignOut.invoke()
     }
 }
